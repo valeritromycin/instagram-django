@@ -1,9 +1,6 @@
 from django.contrib.auth.models import User
 
 from django.forms import ModelForm
-from django import forms
-
-from publication_app.models import Profile
 
 
 class RegistrationForm(ModelForm):

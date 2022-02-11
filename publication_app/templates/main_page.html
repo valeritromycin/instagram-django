@@ -5,12 +5,16 @@
     <title>{{title}}</title>
 </head>
 <body>
+<header>
+    <div>{{ user }}
+    </div>
+</header>
 <div>
     {% for post in posts %}
     <h2>{{post.title}}</h2>
     <div>{{post.text}}</div>
     {% if post.image %}
-    <div><img src="{{post.image.url}}"</img></div>
+    <div><img src="{{ post.image.url }}"</img></div>
     {% endif %}
     {% endfor %}
 </div>
