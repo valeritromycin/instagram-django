@@ -21,7 +21,7 @@ class MenuItem(models.Model):
             models.Index(fields=['url', 'menu']),
             models.Index(fields=['menu'])
         ]
-        unique_together =[('menu', 'title'), ]
+        unique_together = [('menu', 'title'), ]
 
     def __str__(self):
         return f'{self.id}: {self.title}'

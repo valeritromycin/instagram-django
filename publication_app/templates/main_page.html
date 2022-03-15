@@ -1,12 +1,17 @@
+{% load menu_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{title}}</title>
+    <title>insta-django</title>
 </head>
 <body>
 <header>
-    <div>{{ user }}
+    <div id="user">
+        {{ user }}
+    </div>
+    <div id="menu">
+        {% login_menu %}
     </div>
 </header>
 <div>
