@@ -33,7 +33,6 @@ class PostsViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMod
     # Post.objects.annotate(likes_count=Count(F('likes'))).order_by(-F("likes_count"))
     # print(1)
 
-
     @action(methods=["get", ], detail=True, name='post_tags', serializer_class=TagDetailSerializer)
     def tags(self, request, pk, *args, **kwargs):
         instance = self.get_queryset().get(pk=pk)

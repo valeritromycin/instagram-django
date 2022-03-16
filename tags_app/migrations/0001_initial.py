@@ -8,7 +8,6 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('publication_app', '0010_auto_20211215_1404'),
     ]
 
     operations = [

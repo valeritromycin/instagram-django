@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'publication_app',
     'registration_app',
     'menu_app',
+    'tags_app',
     'rest_framework',
     'drf_spectacular'
 ]
