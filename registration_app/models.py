@@ -12,5 +12,6 @@ class Profile(models.Model):
         blank=True,
         null=True,
     )
+    avatar = models.ImageField(blank=True, null=True),
     bio = models.TextField(blank=True, null=True),
     github = models.URLField(max_length=2048)

@@ -7,7 +7,7 @@ from .models import Post
 
 def main_page(request):
     posts = Post.objects.order_by('-create_date').all()
-    context = {'title': 'Hello world', 'posts': posts}
+    context = {'title': 'insta-django', 'posts': posts}
     return render(request, 'main_page.html', context)
 
 
@@ -26,7 +26,7 @@ class PostListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
-        context['title'] = "Супер ПОСТЫ"
+        context['title'] = "Posts"
         context['user'] = self.request.user
         return context
 
