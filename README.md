@@ -1,2 +1,2 @@
-# my_django
+# instagram-django
 teach me skills project
