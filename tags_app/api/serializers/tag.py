@@ -11,7 +11,7 @@ class TagSerializer(serializers.ModelSerializer):
 
     posts_count = serializers.SerializerMethodField()
 
-    # @extend_schema_field(int)
+    @extend_schema_field(int)
     def get_posts_count(self, instance) -> int:
         return instance.posts.count()
 

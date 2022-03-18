@@ -1,11 +1,11 @@
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
 from rest_framework.viewsets import GenericViewSet
 
 from ..serializers.tag import TagSerializer, TagDetailSerializer
 from ...models import Tag
 
 
-class TagViewSet(GenericViewSet, ListModelMixin, RetrieveModelMixin):
+class TagViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveModelMixin):
     serializer_class = TagSerializer
     queryset = Tag.objects.all()
     actions_serializers = {'retrieve': TagDetailSerializer, }
