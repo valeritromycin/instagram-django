@@ -152,6 +152,14 @@ REST_FRAMEWORK = {
     )
 }
 
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Blog API",
+    "VERSION": "0.0.1",
+    "COMPONENT_SPLIT_REQUEST": True,
+    'SCHEMA_PATH_PREFIX': r'/api/',
+    "SWAGGER_UI_SETTINGS": {"deepLinking": True, "persistAuthorization": True, "displayOperationId": True, },
+}
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
