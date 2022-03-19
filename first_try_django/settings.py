@@ -39,10 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'publication_app',
     'registration_app',
+    'subscription_app',
     'menu_app',
+    'media_app'
     'tags_app',
+    'likes_app',
+    'comments_app',
     'rest_framework',
-    'drf_spectacular'
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [

@@ -7,7 +7,6 @@ from ...models import Profile
 
 
 class ProfileViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveModelMixin):
-    # permission_classes = [TestPermission, ]
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
     filter_backends = [filters.OrderingFilter, ]

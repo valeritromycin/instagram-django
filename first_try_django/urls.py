@@ -7,6 +7,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 from tags_app.api.router import api_router as tag_router
 from publication_app.api.router import api_router as publication_router
 from registration_app.api.router import api_router as registration_router
+from media_app.api.router import api_router as media_router
 
 from publication_app.views import main_page, PostListView
 from registration_app.views import registration_page, authorisation_page
@@ -25,7 +26,8 @@ urlpatterns = [
     ),
     path('api/', include(tag_router.urls)),
     path('api/', include(publication_router.urls)),
-    path('api/', include(registration_router.urls))
+    path('api/', include(registration_router.urls)),
+    path('api/', include(media_router.urls)),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
