@@ -8,15 +8,18 @@ from tags_app.api.router import api_router as tag_router
 from publication_app.api.router import api_router as publication_router
 from registration_app.api.router import api_router as registration_router
 from media_app.api.router import api_router as media_router
+from likes_app.api.router import api_router as likes_router
+from comments_app.api.router import api_router as comments_router
 
 from publication_app.views import main_page, PostListView
-from registration_app.views import registration_page, authorisation_page
+from registration_app.views import registration_page, authorisation_page, logout_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', PostListView.as_view(), name='main_page'),
     path('sign-up/', registration_page, name='sign-up'),
     path('sign-in/', authorisation_page, name='sign-in'),
+    path('logout/', logout_page, name='logout'),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     path(
@@ -28,6 +31,8 @@ urlpatterns = [
     path('api/', include(publication_router.urls)),
     path('api/', include(registration_router.urls)),
     path('api/', include(media_router.urls)),
+    path('api/', include(likes_router.urls)),
+    path('api/', include(comments_router.urls))
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

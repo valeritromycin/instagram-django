@@ -40,4 +40,4 @@ def authorisation_page(request):
 
 def logout_page(request):
     logout(request)
-    return render(request, 'main_page.html', context)
+    return render(request, 'main_page.html')

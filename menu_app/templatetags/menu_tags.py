@@ -20,7 +20,7 @@ def login_menu(context):
                 'title': context.request.user.username,
             },
             {
-                'url': '',
+                'url': '/logout/',
                 'title': "Sign out",
             },
         ]
