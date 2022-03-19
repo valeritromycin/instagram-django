@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
@@ -8,6 +9,7 @@ from ...models import Post
 
 class PostSerializer(serializers.ModelSerializer):
     is_fan = serializers.SerializerMethodField()
+    likes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -28,4 +30,6 @@ class PostSerializer(serializers.ModelSerializer):
         user = self.context.get('request').user
         return is_fan(obj, user)
 
-
+    @extend_schema_field(int)
+    def get_likes_count(self, instance) -> int:
+        instance.likes.count()

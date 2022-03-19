@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from likes_app.services import is_fan
@@ -7,6 +8,7 @@ from ...models import Comment
 
 class CommentSerializer(serializers.ModelSerializer):
     is_fan = serializers.SerializerMethodField()
+    likes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
@@ -22,3 +24,7 @@ class CommentSerializer(serializers.ModelSerializer):
     def get_is_fan(self, obj) -> bool:
         user = self.context.get('request').user
         return is_fan(obj, user)
+
+    @extend_schema_field(int)
+    def get_likes_count(self, instance) -> int:
+        instance.likes.count()

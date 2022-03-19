@@ -23,7 +23,7 @@ class TestPermission(permissions.BasePermission):
 
 
 class PostsViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveModelMixin):
-    permission_classes = [TestPermission, ]
+    # permission_classes = [TestPermission, ]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(is_public=True)
     filter_backends = [filters.OrderingFilter, ]
@@ -37,3 +37,5 @@ class PostsViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMod
     def tags(self, request, pk, *args, **kwargs):
         instance = self.get_queryset().get(pk=pk)
         return Response(self.get_serializer(instance.tags.all(), many=True).data)
+
+#    @action(methods=["post", ], )
