@@ -4,6 +4,8 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 from tags_app.api.router import api_router as tag_router
 from publication_app.api.router import api_router as publication_router
 from registration_app.api.router import api_router as registration_router
@@ -32,7 +34,9 @@ urlpatterns = [
     path('api/', include(registration_router.urls)),
     path('api/', include(media_router.urls)),
     path('api/', include(likes_router.urls)),
-    path('api/', include(comments_router.urls))
+    path('api/', include(comments_router.urls)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -23,7 +23,7 @@ class TestPermission(permissions.BasePermission):
 
 
 class PostsViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveModelMixin):
-    # permission_classes = [TestPermission, ]
+    permission_classes = [TestPermission, ]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(is_public=True)
     filter_backends = [filters.OrderingFilter, ]
