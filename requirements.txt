@@ -3,4 +3,5 @@ djangorestframework==3.13.0
 Pillow==8.4.0
 drf-spectacular==0.21.0
 djangorestframework-simplejwt==5.0.0
-django-heroku
+gunicorn==20.1.0
+django-heroku==0.3.1
