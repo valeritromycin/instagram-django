@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'registration_app',
     'subscription_app',
     'menu_app',
-    'media_app'
+    'media_app',
     'tags_app',
     'likes_app',
     'comments_app',

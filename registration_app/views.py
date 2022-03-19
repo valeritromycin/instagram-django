@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 
 from registration_app.forms.registrations import RegistrationForm
@@ -36,3 +36,8 @@ def authorisation_page(request):
         'authorisation_page': Authorisation, 'error': error
     }
     return render(request, "authorisation_page.html", context)
+
+
+def logout_page(request):
+    logout(request)
+    return render(request, 'main_page.html', context)
