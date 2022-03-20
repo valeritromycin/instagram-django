@@ -1,0 +1,162 @@
+Index: likes_app/models.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/likes_app/models.py b/likes_app/models.py
+--- a/likes_app/models.py	(revision 8d2f1e6ff26d62924bd19d5f7224fcb99529d379)
++++ b/likes_app/models.py	(date 1647737205300)
+@@ -7,8 +7,8 @@
+ 
+ class Like(models.Model):
+     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False, related_name="likes")
+-    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=False, blank=False, related_name="likes")
+-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=False, blank=False, related_name="likes")
++    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True, related_name="likes")
++    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True, related_name="likes")
+ 
+     class Meta:
+         unique_together = (('user', 'post'), ('user', 'comment'))
+Index: subscription_app/models.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/subscription_app/models.py b/subscription_app/models.py
+--- a/subscription_app/models.py	(revision 8d2f1e6ff26d62924bd19d5f7224fcb99529d379)
++++ b/subscription_app/models.py	(date 1647737811165)
+@@ -1,4 +1,17 @@
+ from django.db import models
++from django.contrib.auth.models import User
++
++from tags_app.models import Tag
+ 
+-# Create your models here.
++
++class Subscription(models.Model):
++    subscriber = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False, related_name="+")
++    subscription_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True,
++                                          related_name="subscribers")
++    subscription_tag = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True, blank=True,
++                                         related_name="subscribers")
++
++    class Meta:
++        unique_together = (('subscriber', 'subscription_user'),
++                           ('subscriber', 'subscription_tag'))
+ 
+Index: subscription_app/api/router.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/subscription_app/api/router.py b/subscription_app/api/router.py
+new file mode 100644
+--- /dev/null	(date 1647738116596)
++++ b/subscription_app/api/router.py	(date 1647738116596)
+@@ -0,0 +1,10 @@
++from rest_framework import routers
++
++from .views.subscriptions import SubscribeUserView, SubscribeTagView, SubscriptionsViewSet
++
++api_router = routers.DefaultRouter()
++
++api_router.register('subscribe/user', SubscribeUserView)
++api_router.register('subscribe/tag', SubscribeTagView)
++api_router.register('subscribe/all', SubscriptionsViewSet)
++
+Index: first_try_django/urls.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/first_try_django/urls.py b/first_try_django/urls.py
+--- a/first_try_django/urls.py	(revision 8d2f1e6ff26d62924bd19d5f7224fcb99529d379)
++++ b/first_try_django/urls.py	(date 1647737549026)
+@@ -12,6 +12,7 @@
+ from media_app.api.router import api_router as media_router
+ from likes_app.api.router import api_router as likes_router
+ from comments_app.api.router import api_router as comments_router
++from subscription_app.api.router import api_router as subscriptions_router
+ 
+ from publication_app.views import main_page, PostListView
+ from registration_app.views import registration_page, authorisation_page, logout_page
+@@ -35,6 +36,7 @@
+     path('api/', include(media_router.urls)),
+     path('api/', include(likes_router.urls)),
+     path('api/', include(comments_router.urls)),
++    path('api/', include(subscriptions_router.urls)),
+     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+ ]
+Index: subscription_app/api/views/subscriptions.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/subscription_app/api/views/subscriptions.py b/subscription_app/api/views/subscriptions.py
+new file mode 100644
+--- /dev/null	(date 1647738046142)
++++ b/subscription_app/api/views/subscriptions.py	(date 1647738046142)
+@@ -0,0 +1,20 @@
++from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, ListModelMixin
++from rest_framework.viewsets import GenericViewSet
++
++from ..serializers.subscriptions import TagSubscriptionSerializer, UserSubscriptionSerializer
++from ...models import Subscription
++
++
++class SubscribeUserView(GenericViewSet, CreateModelMixin, DestroyModelMixin):
++    queryset = Subscription.objects.all()
++    serializer_class = UserSubscriptionSerializer
++
++
++class SubscribeTagView(GenericViewSet, CreateModelMixin, DestroyModelMixin):
++    queryset = Subscription.objects.all()
++    serializer_class = TagSubscriptionSerializer
++
++
++class SubscriptionsViewSet(GenericViewSet, ListModelMixin):
++    queryset = Subscription.objects.all()
++    serializer_class = UserSubscriptionSerializer
+Index: subscription_app/api/serializers/subscriptions.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/subscription_app/api/serializers/subscriptions.py b/subscription_app/api/serializers/subscriptions.py
+new file mode 100644
+--- /dev/null	(date 1647737205321)
++++ b/subscription_app/api/serializers/subscriptions.py	(date 1647737205321)
+@@ -0,0 +1,26 @@
++from rest_framework import serializers
++from ...models import Subscription
++
++
++class UserSubscriptionSerializer(serializers.ModelSerializer):
++    class Meta:
++        model = Subscription
++        read_only_fields = ['subscriber', ]
++        exclude = ['subscription_tag']
++
++    publisher_user = serializers.HiddenField(
++        default=serializers.CurrentUserDefault(),
++        source="subscriber"
++    )
++
++
++class TagSubscriptionSerializer(serializers.ModelSerializer):
++    class Meta:
++        model = Subscription
++        read_only_fields = ['subscriber', ]
++        exclude = ['subscription_user']
++
++    publisher_user = serializers.HiddenField(
++        default=serializers.CurrentUserDefault(),
++        source="subscriber"
++    )
+diff --git a/subscription_app/api/__init__.py b/subscription_app/api/__init__.py
+new file mode 100644
+diff --git a/subscription_app/api/views/__init__.py b/subscription_app/api/views/__init__.py
+new file mode 100644
+diff --git a/subscription_app/api/serializers/__init__.py b/subscription_app/api/serializers/__init__.py
+new file mode 100644

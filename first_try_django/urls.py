@@ -12,6 +12,7 @@ from registration_app.api.router import api_router as registration_router
 from media_app.api.router import api_router as media_router
 from likes_app.api.router import api_router as likes_router
 from comments_app.api.router import api_router as comments_router
+from subscription_app.api.router import api_router as subscriptions_router
 
 from publication_app.views import main_page, PostListView
 from registration_app.views import registration_page, authorisation_page, logout_page
@@ -35,6 +36,7 @@ urlpatterns = [
     path('api/', include(media_router.urls)),
     path('api/', include(likes_router.urls)),
     path('api/', include(comments_router.urls)),
+    path('api/', include(subscriptions_router.urls)),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
