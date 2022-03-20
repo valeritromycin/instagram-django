@@ -6,6 +6,7 @@ from rest_framework.mixins import ListModelMixin, CreateModelMixin, RetrieveMode
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from comments_app.api.serializers.comments import CommentSerializer
 from tags_app.api.serializers.tag import TagDetailSerializer
 from ..serializers.publications import PostSerializer
 from ...models import Post
@@ -29,13 +30,12 @@ class PostsViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMod
     filter_backends = [filters.OrderingFilter, ]
     ordering_fields = ['create_date', ]
 
-    # def list(self, request, *args, **kwargs):
-    # Post.objects.annotate(likes_count=Count(F('likes'))).order_by(-F("likes_count"))
-    # print(1)
-
     @action(methods=["get", ], detail=True, name='post_tags', serializer_class=TagDetailSerializer)
     def tags(self, request, pk, *args, **kwargs):
         instance = self.get_queryset().get(pk=pk)
         return Response(self.get_serializer(instance.tags.all(), many=True).data)
 
-#    @action(methods=["post", ], )
+    @action(methods=["get", ], detail=True, name='post_comments', serializer_class=CommentSerializer)
+    def comments(self, request, pk, *args, **kwargs):
+        instance = self.get_queryset().get(pk=pk)
+        return Response(self.get_serializer(instance.comments.all(), many=True).data)

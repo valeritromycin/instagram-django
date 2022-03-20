@@ -1,6 +1,7 @@
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
+from likes_app.api.serializers.likes import CommentLikeSerializer
 from likes_app.services import is_fan
 from tags_app.api.serializers.tag import TagSerializer
 from ...models import Comment
@@ -19,7 +20,9 @@ class CommentSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault(),
         source="user"
     )
+
     tags = TagSerializer(many=True, read_only=True)
+    likes = CommentLikeSerializer(many=True, read_only=True)
 
     def get_is_fan(self, obj) -> bool:
         user = self.context.get('request').user
