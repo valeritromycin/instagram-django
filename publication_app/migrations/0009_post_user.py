@@ -15,6 +15,11 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='post',
+            name='is_public',
+            field=models.BooleanField(default=True),
+        ),
+        migrations.AddField(
+            model_name='post',
             name='user',
             field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, related_name='posts', to='auth.user'),
             preserve_default=False,

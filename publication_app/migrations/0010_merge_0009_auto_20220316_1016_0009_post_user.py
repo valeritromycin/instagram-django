@@ -6,7 +6,6 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('publication_app', '0009_auto_20220316_1016'),
         ('publication_app', '0009_post_user'),
     ]
 
