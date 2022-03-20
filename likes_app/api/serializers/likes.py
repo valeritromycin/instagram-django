@@ -1,12 +1,12 @@
-from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
+
 from ...models import Like
 
 
 class PostLikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
-        exclude = ('user', 'comment')
+        exclude = ['user', 'comment']
 
     publisher_user = serializers.HiddenField(
         default=serializers.CurrentUserDefault(),
@@ -17,6 +17,12 @@ class PostLikeSerializer(serializers.ModelSerializer):
         if self.context.get('request').user == data['post'].user.id:
             raise serializers.ValidationError("cannot like yourself")
         return data
+
+
+class PostLikeDetailSerializer(PostLikeSerializer):
+    class Meta:
+        model = Like
+        exclude = ['comment']
 
 
 class CommentLikeSerializer(serializers.ModelSerializer):

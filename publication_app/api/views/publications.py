@@ -1,5 +1,4 @@
 from rest_framework import filters
-from django.db.models import F, Sum, Q, Count
 from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, RetrieveModelMixin
@@ -7,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from comments_app.api.serializers.comments import CommentSerializer
+from likes_app.api.serializers.likes import PostLikeSerializer, PostLikeDetailSerializer
 from tags_app.api.serializers.tag import TagDetailSerializer
 from ..serializers.publications import PostSerializer
 from ...models import Post
@@ -39,3 +39,8 @@ class PostsViewSet(GenericViewSet, ListModelMixin, CreateModelMixin, RetrieveMod
     def comments(self, request, pk, *args, **kwargs):
         instance = self.get_queryset().get(pk=pk)
         return Response(self.get_serializer(instance.comments.all(), many=True).data)
+
+    @action(methods=["get", ], detail=True, name='post_likes', serializer_class=PostLikeDetailSerializer)
+    def likes(self, request, pk, *args, **kwargs):
+        instance = self.get_queryset().get(pk=pk)
+        return Response(self.get_serializer(instance.likes.all(), many=True).data)
