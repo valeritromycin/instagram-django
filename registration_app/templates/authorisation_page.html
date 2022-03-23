@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign in</title>
+</head>
+<body>
+{% if error %}
+    <div>Неверный логин или пароль</div>
+{% endif %}
+<form action="/sign-in/" method="post">
+    {% csrf_token %}
+    {{ authorisation_page }}
+    <input type="submit" value="Sign in">
+</form>
+</body>
+</html>

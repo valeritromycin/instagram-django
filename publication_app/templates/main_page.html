@@ -1,0 +1,27 @@
+{% load menu_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>insta-django</title>
+</head>
+<body>
+<header>
+    <div id="user">
+        {{ user }}
+    </div>
+    <div id="menu">
+        {% login_menu %}
+    </div>
+</header>
+<div>
+    {% for post in posts %}
+    <h2>{{post.title}}</h2>
+    <div>{{post.text}}</div>
+    {% if post.image %}
+    <div><img src="{{ post.image.url }}"/></div>
+    {% endif %}
+    {% endfor %}
+</div>
+</body>
+</html>
